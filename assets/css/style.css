@@ -1,0 +1,63 @@
+:root{
+    --cor-principal:  #25d366 ;
+    --cor-secundaria: #fff;
+}
+
+
+
+
+/* Garante que o footer fique no final da página */
+body {
+display: flex;
+flex-direction: column;
+min-height: 100vh;
+}
+main {
+flex: 1;
+}
+
+/* ===== ESTILO DO BOTÃO FLUTUANTE WHATSAPP ===== */
+.whatsapp-float {
+position: fixed;
+width: 60px;
+height: 60px;
+bottom: 40px;
+right: 40px;
+background-color: var(--cor-principal);
+color: var(--cor-secundaria);
+border-radius: 50px;
+text-align: center;
+font-size: 30px;
+box-shadow: 2px 2px 3px #999;
+z-index: 100;
+/* Para centralizar o ícone */
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.whatsapp-float:hover {
+color: #fff;
+background-color: #128c7e;
+}
+
+      
+/* Define a largura máxima do formulário */
+.form-signin {
+    max-width: 400px;
+    padding: 1rem;
+}
+
+/* Estilo para o logo */
+.form-signin .logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.btn:hover{
+    color: var(--bs-nav-link-color);
+}
+.btn{
+    color: var(--bs-nav-link-color);
+}
