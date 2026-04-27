@@ -1,63 +1,65 @@
-:root{
-    --cor-principal:  #25d366 ;
-    --cor-secundaria: #fff;
+:root {
+  --cor-principal: #25d366;
+  --cor-secundaria: #ffffff;
 }
 
-
-
-
-/* Garante que o footer fique no final da página */
 body {
-display: flex;
-flex-direction: column;
-min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f6f8fb;
 }
+
 main {
-flex: 1;
+  flex: 1;
 }
 
-/* ===== ESTILO DO BOTÃO FLUTUANTE WHATSAPP ===== */
+.page-shell {
+  padding-bottom: 2rem;
+}
+
+.page-header {
+  background: linear-gradient(135deg, rgba(37, 211, 102, 0.15), rgba(37, 211, 102, 0.02));
+  border: 1px solid rgba(37, 211, 102, 0.2);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.product-card {
+  border: 0;
+  border-radius: 14px;
+}
+
+.product-card .card-img-top {
+  height: 220px;
+  object-fit: cover;
+}
+
+.btn-primary {
+  background-color: var(--cor-principal);
+  border-color: var(--cor-principal);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #1fb85c;
+  border-color: #1fb85c;
+}
+
 .whatsapp-float {
-position: fixed;
-width: 60px;
-height: 60px;
-bottom: 40px;
-right: 40px;
-background-color: var(--cor-principal);
-color: var(--cor-secundaria);
-border-radius: 50px;
-text-align: center;
-font-size: 30px;
-box-shadow: 2px 2px 3px #999;
-z-index: 100;
-/* Para centralizar o ícone */
-display: flex;
-justify-content: center;
-align-items: center;
-}
-
-.whatsapp-float:hover {
-color: #fff;
-background-color: #128c7e;
-}
-
-      
-/* Define a largura máxima do formulário */
-.form-signin {
-    max-width: 400px;
-    padding: 1rem;
-}
-
-/* Estilo para o logo */
-.form-signin .logo {
-    width: 120px;
-    height: auto;
-    margin-bottom: 1rem;
-}
-
-.btn:hover{
-    color: var(--bs-nav-link-color);
-}
-.btn{
-    color: var(--bs-nav-link-color);
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 40px;
+  right: 40px;
+  background-color: var(--cor-principal);
+  color: var(--cor-secundaria);
+  border-radius: 50px;
+  text-align: center;
+  font-size: 30px;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

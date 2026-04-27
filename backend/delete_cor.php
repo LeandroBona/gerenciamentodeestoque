@@ -1,29 +1,16 @@
 <?php
-    if(isset($_GET['id'])){
-        include 'config.php';
-        $id = intval($_GET['id']);
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/helpers.php';
 
-        $sql = "DELETE FROM cor WHERE id_cor= ?";
+$id = (int) ($_GET['id'] ?? 0);
+if ($id <= 0) {
+    redirect_with_message('/cores.php', 'Cor inválida.', 'error');
+}
 
-        $stmt = $conexao->prepare($sql);
+$stmt = $conexao->prepare('DELETE FROM cor WHERE id_cor = ?');
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$stmt->close();
+$conexao->close();
 
-        if($stmt === false){
-            header("location:cores.php?status=erro");
-
-            exit();
-        }
-
-        $stmt ->bind_param("i", $id);
-        if($stmt ->execute()){
-            header("location:cores.php?status=sucesso");
-        }else{
-            header("location:cores.php?status=erro");
-        }
-        $stmt -> close();
-        $conexao ->close();
-    }else{
-        header("location:cores.php");
-    }
-    exit();
-
-?>
+redirect_with_message('/cores.php', 'Cor excluída com sucesso.');

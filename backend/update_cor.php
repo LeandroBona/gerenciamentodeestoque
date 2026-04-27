@@ -1,18 +1,18 @@
 <?php
-include 'config.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/helpers.php';
 
-if(isset($_POST['id']) && isset($_POST['color'])) {
-    $id = $_POST['id'];
-    $nome = $_POST['color'];
+$id = post_int('id');
+$nome = post_string('color');
 
-    $sql = "UPDATE cor SET nome = '$nome' WHERE id_cor = $id";
-
-    if($conexao->query($sql) === TRUE) {
-        header("Location: ../cores.php");
-        exit();
-    } else {
-        echo "Erro ao atualizar: " . $conexao->error;
-    }
-} else {
-    echo "Dados inválidos.";
+if ($id <= 0 || $nome === '') {
+    redirect_with_message('/cores.php', 'Dados inválidos para atualização.', 'error');
 }
+
+$stmt = $conexao->prepare('UPDATE cor SET nome = ? WHERE id_cor = ?');
+$stmt->bind_param('si', $nome, $id);
+$stmt->execute();
+$stmt->close();
+$conexao->close();
+
+redirect_with_message('/cores.php', 'Cor atualizada com sucesso.');

@@ -1,25 +1,22 @@
 <?php
-require_once "config.php";
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/helpers.php';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $valor = $_POST['valor'] ?? 0;
-    $motivo = trim($_POST['motivo'] ?? '');
-
-    if ($valor > 0 && $motivo !== '') {
-        $stmt = $conexao->prepare("INSERT INTO saidacaixa (valor, motivo) VALUES (?, ?)");
-        $stmt->bind_param("ds", $valor, $motivo);
-
-        if ($stmt->execute()) {
-            header("Location: ../caixa.php?msg=sucesso");
-            exit;
-        } else {
-            echo "Erro ao registrar saída: " . $conexao->error;
-        }
-    } else {
-        echo "Preencha todos os campos corretamente.";
-    }
-} else {
-    header("Location: ../caixa.php");
-    exit;
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    redirect_with_message('/caixa.php', 'Método inválido.', 'error');
 }
-?>
+
+$valor = post_float('valor');
+$motivo = post_string('motivo');
+
+if ($valor <= 0 || $motivo === '') {
+    redirect_with_message('/caixa.php', 'Preencha todos os campos corretamente.', 'error');
+}
+
+$stmt = $conexao->prepare('INSERT INTO saidacaixa (valor, motivo) VALUES (?, ?)');
+$stmt->bind_param('ds', $valor, $motivo);
+$stmt->execute();
+$stmt->close();
+$conexao->close();
+
+redirect_with_message('/caixa.php', 'Saída de caixa registrada com sucesso.');

@@ -1,20 +1,16 @@
 <?php
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/helpers.php';
 
-include 'config.php';
-
-$cor = $_POST['color'];
-
-$sql = "INSERT INTO cor (nome) VALUES (?)";
-$stmt = $conexao->prepare($sql);
-$stmt->bind_param('s', $cor);
-
-if($stmt->execute()){
-    echo "<h1> Cor cadastrada com sucesso </h1>";
-}else{
-    echo "Erro ao cadastrar a cor" . $conexao->error;
+$cor = post_string('color');
+if ($cor === '') {
+    redirect_with_message('/cores.php', 'Informe a cor.', 'error');
 }
 
+$stmt = $conexao->prepare('INSERT INTO cor (nome) VALUES (?)');
+$stmt->bind_param('s', $cor);
+$stmt->execute();
 $stmt->close();
 $conexao->close();
 
-?>
+redirect_with_message('/cores.php', 'Cor cadastrada com sucesso.');
