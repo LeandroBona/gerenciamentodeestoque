@@ -1,29 +1,16 @@
 <?php
-    if(isset($_GET['id'])){
-        include 'config.php';
-        $id = intval($_GET['id']);
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/helpers.php';
 
-        $sql = "DELETE FROM categoria WHERE id_categoria= ?";
+$id = (int) ($_GET['id'] ?? 0);
+if ($id <= 0) {
+    redirect_with_message('/categorias.php', 'Categoria inválida.', 'error');
+}
 
-        $stmt = $conexao->prepare($sql);
+$stmt = $conexao->prepare('DELETE FROM categoria WHERE id_categoria = ?');
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$stmt->close();
+$conexao->close();
 
-        if($stmt === false){
-            header("location:categorias.php?status=erro");
-
-            exit();
-        }
-
-        $stmt ->bind_param("i", $id);
-        if($stmt ->execute()){
-            header("location:categorias.php?status=sucesso");
-        }else{
-            header("location:categorias.php?status=erro");
-        }
-        $stmt -> close();
-        $conexao ->close();
-    }else{
-        header("location:categorias.php");
-    }
-    exit();
-
-?>
+redirect_with_message('/categorias.php', 'Categoria excluída com sucesso.');

@@ -1,18 +1,18 @@
 <?php
-include 'config.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/helpers.php';
 
-if(isset($_POST['id']) && isset($_POST['material'])) {
-    $id = $_POST['id'];
-    $nome = $_POST['material'];
+$id = post_int('id');
+$nome = post_string('material');
 
-    $sql = "UPDATE material SET nome = '$nome' WHERE id_material = $id";
-
-    if($conexao->query($sql) === TRUE) {
-        header("Location: ../materiais.php");
-        exit();
-    } else {
-        echo "Erro ao atualizar: " . $conexao->error;
-    }
-} else {
-    echo "Dados inválidos.";
+if ($id <= 0 || $nome === '') {
+    redirect_with_message('/materiais.php', 'Dados inválidos para atualização.', 'error');
 }
+
+$stmt = $conexao->prepare('UPDATE material SET nome = ? WHERE id_material = ?');
+$stmt->bind_param('si', $nome, $id);
+$stmt->execute();
+$stmt->close();
+$conexao->close();
+
+redirect_with_message('/materiais.php', 'Material atualizado com sucesso.');

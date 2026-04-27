@@ -1,29 +1,16 @@
 <?php
-    if(isset($_GET['id'])){
-        include 'config.php';
-        $id = intval($_GET['id']);
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/helpers.php';
 
-        $sql = "DELETE FROM material WHERE id_material= ?";
+$id = (int) ($_GET['id'] ?? 0);
+if ($id <= 0) {
+    redirect_with_message('/materiais.php', 'Material inválido.', 'error');
+}
 
-        $stmt = $conexao->prepare($sql);
+$stmt = $conexao->prepare('DELETE FROM material WHERE id_material = ?');
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$stmt->close();
+$conexao->close();
 
-        if($stmt === false){
-            header("location:materiais.php?status=erro");
-
-            exit();
-        }
-
-        $stmt ->bind_param("i", $id);
-        if($stmt ->execute()){
-            header("location:materiais.php?status=sucesso");
-        }else{
-            header("location:materiais.php?status=erro");
-        }
-        $stmt -> close();
-        $conexao ->close();
-    }else{
-        header("location:materiais.php");
-    }
-    exit();
-
-?>
+redirect_with_message('/materiais.php', 'Material excluído com sucesso.');
